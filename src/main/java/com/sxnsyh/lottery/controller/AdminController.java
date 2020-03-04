@@ -17,6 +17,11 @@ public class AdminController {
     @Autowired
     AdminService service;
 
+    @GetMapping("/prize")
+    public Result getPrizeList() {
+        return ResultGenerator.genSuccessResult(service.getPrizeList());
+    }
+
     @PostMapping("/prize")
     public Result savePrize(@RequestBody PrizeDomain prizeDomain) {
         service.savePrize(prizeDomain);
