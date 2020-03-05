@@ -93,7 +93,10 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         //解决跨域问题
-        registry.addMapping("/**");
+        registry.addMapping("/**").allowedOrigins("*")
+                .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE")
+                .maxAge(3600)
+                .allowCredentials(true);
     }
 
     private void responseResult(HttpServletResponse response, Result result) {
