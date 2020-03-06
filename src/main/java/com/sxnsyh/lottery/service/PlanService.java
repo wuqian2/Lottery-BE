@@ -34,8 +34,8 @@ public class PlanService {
             BeanUtils.copyProperties(item, planDomain);
 
             // 计划详情
-            Object[] planInfoDomains = planInfoRepository.queryPlanInfo(planDomain.getId());
-            System.out.println(planInfoDomains);
+            List<PlanInfoDomain> planInfoDomains = planInfoRepository.queryPlanInfo(planDomain.getId());
+            planDomain.setPlanInfoList(planInfoDomains);
 
             return planDomain;
         }).collect(Collectors.toList());
@@ -68,6 +68,9 @@ public class PlanService {
      * @param id
      */
     public void deletePlan(int id) {
+        // 删除计划
         repository.deleteById(id);
+        // 删除计划详情
+        planInfoRepository.deleteAllByPlanId(id);
     }
 }

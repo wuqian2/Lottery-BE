@@ -5,12 +5,13 @@ import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "plan", schema = "lottry", catalog = "")
+@Table(name = "plan", schema = "lottry")
 public class PlanEntity {
     private int id;
     private Date beginDate;
     private Date endDate;
     private Double baseProbability;
+    private int lotteryCount;
 
     @Id
     @Column(name = "id")
@@ -67,5 +68,15 @@ public class PlanEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, beginDate, endDate, baseProbability);
+    }
+
+    @Basic
+    @Column(name = "lottery_count")
+    public int getLotteryCount() {
+        return lotteryCount;
+    }
+
+    public void setLotteryCount(int lotteryCount) {
+        this.lotteryCount = lotteryCount;
     }
 }

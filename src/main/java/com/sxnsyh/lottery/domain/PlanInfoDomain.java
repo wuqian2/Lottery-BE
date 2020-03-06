@@ -1,10 +1,13 @@
 package com.sxnsyh.lottery.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.sql.Date;
 
 @Data
+@AllArgsConstructor
+
 public class PlanInfoDomain {
     private int id;
 

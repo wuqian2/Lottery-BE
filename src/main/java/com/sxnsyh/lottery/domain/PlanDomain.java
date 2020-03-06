@@ -24,5 +24,10 @@ public class PlanDomain {
      */
     private Double baseProbability;
 
+    /**
+     * 抽奖次数
+     */
+    private int lotteryCount;
+
     private List<PlanInfoDomain> planInfoList;
 }
