@@ -41,8 +41,23 @@ public class LotteryController {
     }
 
 
+    /**
+     * 获取客户剩余次数
+     * @param id
+     * @return
+     */
     @GetMapping("/getCountById/{id}")
     public Result getCountById(@PathVariable int id) {
         return ResultGenerator.genSuccessResult(service.getCount(id));
+    }
+
+
+    /**
+     * 获取礼物列表
+     * @return
+     */
+    @GetMapping("/prizes")
+    public Result getPrize() {
+        return ResultGenerator.genSuccessResult(service.getPrize());
     }
 }

@@ -150,7 +150,7 @@
     };
 
     $.ajax({
-        url: "admin/prize",
+        url: "lottery/prizes",
         type: "get",
         async: false,
         success: function (data) {
@@ -158,6 +158,7 @@
 
             var thanks = {id:0, prizeName: '谢谢参与'};
             turnplate.restaraunts.push(thanks);
+            console.log(turnplate.restaraunts);
             // 添加图片
             /*for (var i = 0; i < turnplate.restaraunts.length; i++) {
                 var img = $("<img style='display: none'   id='" + turnplate.restaraunts[i].id + "' src='data:image/jpeg;base64," + turnplate.restaraunts[i].image.data + "'>")[0];

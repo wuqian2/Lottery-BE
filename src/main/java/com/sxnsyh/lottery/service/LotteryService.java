@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.sxnsyh.lottery.common.ServiceException;
 import com.sxnsyh.lottery.entity.CustomerEntity;
 import com.sxnsyh.lottery.repository.CustomerRepository;
+import com.sxnsyh.lottery.repository.PrizeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -19,6 +22,9 @@ import javax.servlet.http.HttpSession;
 public class LotteryService {
     @Autowired
     CustomerRepository customerRepositoryRepository;
+
+    @Autowired
+    PrizeRepository prizeRepository;
 
     /**
      * 登录后将客户信息保存进sesion中
@@ -49,5 +55,15 @@ public class LotteryService {
     public int getCount(int id) {
         CustomerEntity customerEntity = customerRepositoryRepository.findById(id).orElseThrow(() -> new ServiceException("服务器出错！"));
         return customerEntity.getRemainingCount();
+    }
+
+    public List<JSONObject> getPrize() {
+        return prizeRepository.findAll().stream().map(item -> {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", item.getId());
+            jsonObject.put("prizeName", item.getPrizeName());
+            return jsonObject;
+        }).collect(Collectors.toList());
+
     }
 }
