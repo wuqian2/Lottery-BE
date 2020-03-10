@@ -5,17 +5,21 @@ import com.sxnsyh.lottery.common.CustomerExcelReaderListener;
 import com.sxnsyh.lottery.common.ServiceException;
 import com.sxnsyh.lottery.domain.PageDomain;
 import com.sxnsyh.lottery.entity.CustomerEntity;
+import com.sxnsyh.lottery.entity.RecordEntity;
 import com.sxnsyh.lottery.repository.CustomerRepository;
+import com.sxnsyh.lottery.repository.RecordRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @Transactional
@@ -24,6 +28,24 @@ public class CommonService {
     @Autowired
     CustomerRepository customerRepositoryRepository;
 
+    @Autowired
+    RecordRepository recordRepository;
+
+    /**
+     * 获取中奖记录列表
+     * @return
+     */
+    public List<RecordEntity> getRecordList() {
+        return recordRepository.findAll(Sort.by("winningDate"));
+    }
+
+
+    /**
+     * 分页获取客户列表
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
     public PageDomain<CustomerEntity> getCustomerList(int pageIndex, int pageSize) {
         Pageable pageable = PageRequest.of(pageIndex-1, pageSize);
         Page<CustomerEntity> customers = customerRepositoryRepository.findAll(pageable);
@@ -36,6 +58,11 @@ public class CommonService {
 
     }
 
+
+    /**
+     * 客户信息导入
+     * @param file
+     */
     public void readExcel(MultipartFile file) {
         // 先删除所有记录
         customerRepositoryRepository.deleteAll();

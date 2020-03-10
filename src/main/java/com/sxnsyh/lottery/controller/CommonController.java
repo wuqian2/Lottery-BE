@@ -28,8 +28,13 @@ public class CommonController {
     CommonService service;
 
     @GetMapping("/customer")
-    public Result getPlanList(@RequestParam("pageIndex") int pageIndex, @RequestParam("pageSize") int pageSize) {
+    public Result getCustomerList(@RequestParam("pageIndex") int pageIndex, @RequestParam("pageSize") int pageSize) {
         return ResultGenerator.genSuccessResult(service.getCustomerList(pageIndex, pageSize));
+    }
+
+    @GetMapping("/record")
+    public Result getRecordList() {
+        return ResultGenerator.genSuccessResult(service.getRecordList());
     }
 
 
