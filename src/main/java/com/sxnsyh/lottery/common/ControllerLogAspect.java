@@ -60,11 +60,5 @@ public class ControllerLogAspect {
     log.info("================  Controller Log End  =====================");
   }
 
-  /** 后置异常通知 */
-  @AfterThrowing(pointcut = "controllers()", throwing = "e")
-  public void doAfterThrowing(final Throwable e) {
-    log.info("==> Exception: {}", e.toString());
-    e.printStackTrace();
-    log.info("================  Controller Log End  =====================");
-  }
+
 }

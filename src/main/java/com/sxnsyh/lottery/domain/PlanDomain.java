@@ -25,6 +25,11 @@ public class PlanDomain {
     private Double baseProbability;
 
     /**
+     * 最高概率
+     */
+    private Double topProbability;
+
+    /**
      * 抽奖次数
      */
     private int lotteryCount;

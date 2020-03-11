@@ -1,6 +1,5 @@
 package com.sxnsyh.lottery.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.sxnsyh.lottery.common.ServiceException;
 import com.sxnsyh.lottery.entity.CustomerEntity;
@@ -11,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +43,6 @@ public class LotteryService {
 
     }
 
-
     /**
      * 获取剩余次数
      * @param id
@@ -57,6 +53,10 @@ public class LotteryService {
         return customerEntity.getRemainingCount();
     }
 
+    /**
+     * 获取抽奖礼物
+     * @return
+     */
     public List<JSONObject> getPrize() {
         return prizeRepository.findAll().stream().map(item -> {
             JSONObject jsonObject = new JSONObject();
@@ -64,6 +64,25 @@ public class LotteryService {
             jsonObject.put("prizeName", item.getPrizeName());
             return jsonObject;
         }).collect(Collectors.toList());
+    }
 
+
+    /**
+     * 抽奖逻辑
+     * @param customerId
+     * @return
+     */
+    public int doLottery(int customerId) {
+        // 1.检测是否还有剩余次数
+        int count = this.getCount(customerId);
+        if (count <= 0) {
+            throw new ServiceException("今日抽奖次数已用完");
+        }
+
+        // 2.检测该客户的交易笔数和交易金额是否满足当前规则
+
+
+
+        return 0;
     }
 }

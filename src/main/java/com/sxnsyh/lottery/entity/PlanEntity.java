@@ -5,13 +5,14 @@ import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "plan", schema = "lottry")
+@Table(name = "plan", schema = "lottry", catalog = "")
 public class PlanEntity {
     private int id;
     private Date beginDate;
     private Date endDate;
     private Double baseProbability;
     private int lotteryCount;
+    private Double topProbability;
 
     @Id
     @Column(name = "id")
@@ -78,5 +79,15 @@ public class PlanEntity {
 
     public void setLotteryCount(int lotteryCount) {
         this.lotteryCount = lotteryCount;
+    }
+
+    @Basic
+    @Column(name = "top_probability")
+    public Double getTopProbability() {
+        return topProbability;
+    }
+
+    public void setTopProbability(Double topProbability) {
+        this.topProbability = topProbability;
     }
 }

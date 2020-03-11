@@ -43,7 +43,7 @@ public class LotteryController {
 
     /**
      * 获取客户剩余次数
-     * @param id
+     * @param id 客户编号
      * @return
      */
     @GetMapping("/getCountById/{id}")
@@ -59,5 +59,16 @@ public class LotteryController {
     @GetMapping("/prizes")
     public Result getPrize() {
         return ResultGenerator.genSuccessResult(service.getPrize());
+    }
+
+
+    /**
+     * 获取礼物列表
+     * @param id 客户编号
+     * @return
+     */
+    @GetMapping("/doLottery")
+    public Result doLottery(@RequestParam("id") int id) {
+        return ResultGenerator.genSuccessResult(service.doLottery(id));
     }
 }
