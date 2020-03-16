@@ -103,11 +103,11 @@ public class LotteryService {
             throw new ServiceException("今日抽奖次数已用完");
         }
 
-        // 2.检测该客户是否已经中过奖
-        if ( !"Y".equals(customerEntity.getFlag())) {
+        // 2.检测该客户是否已经中过奖以及是否为我行员工
+        if ( !"Y".equals(customerEntity.getFlag()) && !"Y".equals(customerEntity.getStaffFlag())) {
 
             // 3.获取计划，计算客户中奖概率
-            PlanEntity planEntity = planRepository.findPlanBydate(new Date()).orElseThrow(() -> new ServiceException("今日无抽奖计划"));
+            PlanEntity planEntity = planRepository.findById(1).orElseThrow(() -> new ServiceException("今日无抽奖计划"));
             // 概率差值
             double proValue =  planEntity.getTopProbability()-planEntity.getBaseProbability();
             // 交易笔数差值

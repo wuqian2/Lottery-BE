@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "customer", schema = "lottry")
+@Table(name = "customer", schema = "lottry", catalog = "")
 public class CustomerEntity {
     private int id;
     @ExcelProperty(index = 0)
@@ -23,6 +23,8 @@ public class CustomerEntity {
     private Double transactionAmount;
     private Integer remainingCount;
     private String flag;
+    private Double probability;
+    private String staffFlag;
 
     @Id
     @Column(name = "id")
@@ -134,5 +136,25 @@ public class CustomerEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, phoneNo, customerNo, customerName, certNo, transactionCount, transactionAmount, remainingCount, flag);
+    }
+
+    @Basic
+    @Column(name = "probability")
+    public Double getProbability() {
+        return probability;
+    }
+
+    public void setProbability(Double probability) {
+        this.probability = probability;
+    }
+
+    @Basic
+    @Column(name = "staff_flag")
+    public String getStaffFlag() {
+        return staffFlag;
+    }
+
+    public void setStaffFlag(String staffFlag) {
+        this.staffFlag = staffFlag;
     }
 }

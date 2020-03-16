@@ -12,6 +12,7 @@ import java.util.Date;
 
 /**
  * 定时任务
+ *
  * @author wuqian
  */
 @Component
@@ -34,16 +35,10 @@ public class TimeTask {
     @Scheduled(cron = "0 0 0 * * ?")
     @Transactional
     public void resetTime() {
-
-        try {
-            planRepository.findPlanBydate(new Date()).ifPresent(planEntity -> {
-                // 修改次数
-                this.DEFAULT_CONT = planEntity.getLotteryCount() == 0 ? this.DEFAULT_CONT : planEntity.getLotteryCount();
-            });
-        } catch (Exception e) {
-            log.error("可能出现重复的数据了",e);
-        }
-
+        planRepository.findById(1).ifPresent(planEntity -> {
+            // 修改次数
+            this.DEFAULT_CONT = planEntity.getLotteryCount() == 0 ? this.DEFAULT_CONT : planEntity.getLotteryCount();
+        });
         customerRepository.remainingCount(this.DEFAULT_CONT);
     }
 
