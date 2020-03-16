@@ -27,4 +27,13 @@ public class PrizeDomain {
      */
     private Integer sentedPrize;
 
+    /**
+     * 数量限制
+     */
+    private Integer quantityLimit;
+
+    /**
+     * 金额限制
+     */
+    private Double amountLimit;
 }

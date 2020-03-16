@@ -12,7 +12,7 @@ public class RecordEntity {
     private String customerName;
     private String phone;
     private int prizeId;
-    private Integer prizeName;
+    private String prizeName;
     private Date winningDate;
     private String certNo;
 
@@ -69,13 +69,15 @@ public class RecordEntity {
 
     @Basic
     @Column(name = "prize_name")
-    public Integer getPrizeName() {
+    public String getPrizeName() {
         return prizeName;
     }
 
-    public void setPrizeName(Integer prizeName) {
+    public void setPrizeName(String prizeName) {
         this.prizeName = prizeName;
     }
+
+
 
     @Basic
     @Column(name = "winning_date")

@@ -3,10 +3,12 @@ package com.sxnsyh.lottery.repository;
 import com.sxnsyh.lottery.domain.PlanInfoDomain;
 import com.sxnsyh.lottery.entity.PlanInfoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface PlanInfoRepository extends JpaRepository<PlanInfoEntity,Integer> {
@@ -16,5 +18,10 @@ public interface PlanInfoRepository extends JpaRepository<PlanInfoEntity,Integer
     List<PlanInfoDomain> queryPlanInfo(int planId);
 
     void deleteAllByPlanId(int planId);
+
+
+    @Modifying
+    @Query("update PlanInfoEntity p set p.sendedCount = p.sendedCount+1 where p.id = ?1")
+    void updateSendedCount(int id);
 
 }

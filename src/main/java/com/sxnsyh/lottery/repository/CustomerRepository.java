@@ -15,4 +15,7 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Intege
     int remainingCount(int count);
 
     CustomerEntity findFirstByPhoneNoAndCertNo(String phoneNo, String certNo);
+
+    @Query(value = "select max(c.transaction_count)-min(c.transaction_count ) from customer c ", nativeQuery = true)
+    int getCountDif();
 }

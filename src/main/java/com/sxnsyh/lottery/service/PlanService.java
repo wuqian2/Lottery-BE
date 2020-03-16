@@ -1,5 +1,6 @@
 package com.sxnsyh.lottery.service;
 
+import com.sxnsyh.lottery.common.ServiceException;
 import com.sxnsyh.lottery.domain.PlanDomain;
 import com.sxnsyh.lottery.domain.PlanInfoDomain;
 import com.sxnsyh.lottery.entity.PlanEntity;
@@ -41,9 +42,22 @@ public class PlanService {
         }).collect(Collectors.toList());
     }
 
-    /**
+
+    public PlanEntity getPlan() {
+        return repository.findById(1).orElseThrow(() -> new ServiceException("服务器出错！"));
+    }
+
+    public void savePlan(PlanDomain planDomain) {
+        // 保存计划
+        PlanEntity planEntity = repository.findById(planDomain.getId()).orElse(new PlanEntity());
+        BeanUtils.copyProperties(planDomain,planEntity);
+        repository.save(planEntity);
+    }
+
+
+   /* *//**
      * 保存计划信息
-     */
+     *//*
     public void savePlan(PlanDomain planDomain) {
         // 保存计划
         PlanEntity planEntity = repository.findById(planDomain.getId()).orElse(new PlanEntity());
@@ -61,7 +75,7 @@ public class PlanService {
 
         planInfoRepository.saveAll(planInfoEntities);
 
-    }
+    }*/
 
     /**
      * 删除计划信息

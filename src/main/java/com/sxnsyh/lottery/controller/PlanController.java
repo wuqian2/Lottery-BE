@@ -3,9 +3,7 @@ package com.sxnsyh.lottery.controller;
 import com.sxnsyh.lottery.common.Result;
 import com.sxnsyh.lottery.common.ResultGenerator;
 import com.sxnsyh.lottery.domain.PlanDomain;
-import com.sxnsyh.lottery.domain.PrizeDomain;
 import com.sxnsyh.lottery.service.PlanService;
-import com.sxnsyh.lottery.service.PrizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +18,8 @@ public class PlanController {
     PlanService service;
 
     @GetMapping("/plan")
-    public Result getPlanList() {
-        return ResultGenerator.genSuccessResult(service.getPlanList());
+    public Result getPlan() {
+        return ResultGenerator.genSuccessResult(service.getPlan());
     }
 
     @PostMapping("/plan")
@@ -31,7 +29,7 @@ public class PlanController {
     }
 
     @DeleteMapping("/plan/{id}")
-    public Result deletePrize(@PathVariable int id) {
+    public Result deletePlan(@PathVariable int id) {
         service.deletePlan(id);
         return ResultGenerator.genSuccessResult();
     }

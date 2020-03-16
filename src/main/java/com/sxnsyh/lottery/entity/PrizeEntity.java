@@ -4,13 +4,15 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "prize", schema = "lottry")
+@Table(name = "prize", schema = "lottry", catalog = "")
 public class PrizeEntity {
     private int id;
     private String prizeName;
     private String prizeLevel;
     private Integer prizeCount;
     private Integer sentedPrize;
+    private Integer quantityLimit;
+    private Double amountLimit;
 
     @Id
     @Column(name = "id")
@@ -78,5 +80,25 @@ public class PrizeEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, prizeName, prizeLevel, prizeCount, sentedPrize);
+    }
+
+    @Basic
+    @Column(name = "quantity_limit")
+    public Integer getQuantityLimit() {
+        return quantityLimit;
+    }
+
+    public void setQuantityLimit(Integer quantityLimit) {
+        this.quantityLimit = quantityLimit;
+    }
+
+    @Basic
+    @Column(name = "amount_limit")
+    public Double getAmountLimit() {
+        return amountLimit;
+    }
+
+    public void setAmountLimit(Double amountLimit) {
+        this.amountLimit = amountLimit;
     }
 }
