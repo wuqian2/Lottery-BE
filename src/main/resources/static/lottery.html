@@ -79,14 +79,23 @@
     </div>
 </div>
 
-<div id="toast" style="display: none;">
+<!--错误信息-->
+<div id="error" style="display: none;">
     <div class="weui-mask_transparent"></div>
     <div class="weui-toast">
         <i class="weui-icon-warn weui-icon_msg-primary"></i>
-        <p class="weui-toast__content">无对应客户信息</p>
+        <p class="weui-toast__content"><span id="errorText"></span></p>
     </div>
 </div>
 
+
+<!--中奖信息-->
+<div id="lotteryInfo" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <p class="weui-toast__content"><span id="ownPrizeName"></span></p>
+    </div>
+</div>
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/awardRotate.js"></script>
@@ -123,21 +132,30 @@
                 localStorage.setItem("customerId", data.data.id);
                 localStorage.setItem("name", data.data.name);
             }else {
-                showError();
+                showError('无对应的客户信息！');
             }
         })
     }
 
-    function showError(){
-        var $toast = $('#toast');
+    function showInfo(text){
+        var $toast = $('#lotteryInfo');
+        $("#ownPrizeName").text(text);
         if ($toast.css('display') != 'none') return;
-
         $toast.fadeIn(100);
         setTimeout(function () {
             $toast.fadeOut(100);
         }, 2000);
     }
 
+    function showError(text){
+        var $toast = $('#error');
+        $("#errorText").text(text);
+        if ($toast.css('display') != 'none') return;
+        $toast.fadeIn(100);
+        setTimeout(function () {
+            $toast.fadeOut(100);
+        }, 2000);
+    }
 
     var turnplate = {
         restaraunts: [],				//大转盘奖品名称
@@ -183,7 +201,7 @@
         };
 
         //旋转转盘 item:奖品位置; txt：提示语;
-        var rotateFn = function (item, txt) {
+        var rotateFn = function (item, txt, id) {
             var angles = item * (360 / turnplate.restaraunts.length) - (360 / (turnplate.restaraunts.length * 2));
             if (angles < 270) {
                 angles = 270 - angles;
@@ -197,7 +215,14 @@
                 duration: 8000,
                 callback: function () {
                     //中奖提示
-                    alert(txt);
+                    if (id == 0){
+                        showInfo('谢谢参与');
+                    }else {
+                        showInfo('恭喜您获得奖品【'+txt+'】');
+                    }
+
+                    var count = parseInt($("#count").text());
+                    $("#count").text(count - 1);
                     turnplate.bRotate = !turnplate.bRotate;
                 }
             });
@@ -208,13 +233,15 @@
             turnplate.bRotate = !turnplate.bRotate;
             //奖品的编号
             $.get('lottery/doLottery',{id: localStorage.getItem("customerId")},function (data) {
-                var prizeId = data.data;
-                var itemIndex = turnplate.restaraunts.findIndex(x => x.id === prizeId);
-                //奖品数量等于10,指针落在对应奖品区域的中心角度[252, 216, 180, 144, 108, 72, 36, 360, 324, 288]
-                rotateFn(itemIndex+1, turnplate.restaraunts[itemIndex].prizeName);
+                if (data.code == 400) {
+                    showError(data.message);
+                    turnplate.bRotate = !turnplate.bRotate;
+                } else {
+                    var prizeId = data.data;
+                    var itemIndex = turnplate.restaraunts.findIndex(x => x.id === prizeId);
+                    rotateFn(itemIndex+1, turnplate.restaraunts[itemIndex].prizeName,turnplate.restaraunts[itemIndex].id);
+                }
             })
-
-
         });
 
         // 登录过就不须再次登录，但是剩余次数需要获取

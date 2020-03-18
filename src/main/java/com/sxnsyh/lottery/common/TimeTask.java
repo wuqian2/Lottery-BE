@@ -32,7 +32,7 @@ public class TimeTask {
     /**
      * 每日的0点更新次数
      */
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 16 11 * * ?")
     @Transactional
     public void resetTime() {
         planRepository.findById(1).ifPresent(planEntity -> {

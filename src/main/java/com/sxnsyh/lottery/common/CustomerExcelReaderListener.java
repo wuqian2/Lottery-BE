@@ -6,9 +6,11 @@ import com.alibaba.fastjson.JSON;
 import com.sxnsyh.lottery.entity.CustomerEntity;
 import com.sxnsyh.lottery.repository.CustomerRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class CustomerExcelReaderListener extends AnalysisEventListener<CustomerEntity> {
@@ -61,7 +63,13 @@ public class CustomerExcelReaderListener extends AnalysisEventListener<CustomerE
      */
     private void saveData() {
         log.info("{}条数据，开始存储数据库！", list.size());
-        repository.saveAll(this.list);
+        List<CustomerEntity> entities = this.list.stream().peek(entity -> {
+            CustomerEntity dbEntity = repository.findFirstByPhoneNoAndCertNo(entity.getPhoneNo(), entity.getCertNo());
+            if (dbEntity != null) {
+                BeanUtils.copyProperties(entity, dbEntity);
+            }
+        }).collect(Collectors.toList());
+        repository.saveAll(entities);
         log.info("存储数据库成功！");
     }
 }

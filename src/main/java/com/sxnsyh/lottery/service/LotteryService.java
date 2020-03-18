@@ -42,6 +42,8 @@ public class LotteryService {
     @Autowired
     LogsRepository logsRepository;
 
+    @Autowired
+    PrizeInfoRepository prizeInfoRepository;
 
     /**
      * 登录后将客户信息保存进sesion中
@@ -121,15 +123,19 @@ public class LotteryService {
             // 若生成的随机数小于该客户的概率值则表示中奖了
             if (randInt <= pro) {
                 // 获取中奖的奖品
-                Map<String, Object> lotteryPrize = prizeRepository.getLotteryPrize(planEntity.getId(),customerEntity.getTransactionCount(),customerEntity.getTransactionAmount());
-                // 看奖品是否还有剩余以及该客户是否有资格,若查出来不为null则表示中哦了该产品
-                if (lotteryPrize != null) {
+
+                List<Map<String, Object>> lotteryPrizeList = prizeRepository.getLotteryPrize(customerEntity.getTransactionAmount(), customerEntity.getTransactionCount(), new Date());
+                if (lotteryPrizeList.size() != 0) {
+                    // 查出礼物不为0则说明有礼物可以被发出去，则随机取一个
+                    int index = random.nextInt(lotteryPrizeList.size());
+                    Map<String, Object> lotteryPrize = lotteryPrizeList.get(index);
+
                     // 满足笔数，金额和奖品剩余数量则中奖
                     prizeId = (int) lotteryPrize.get("prize_id");
 
                     // 添加更新中奖数量和中奖记录以及中奖标识
                     // 更新计划表的送出数量
-                    planInfoRepository.updateSendedCount((Integer) lotteryPrize.get("id"));
+                    prizeInfoRepository.updateSendedCount((Integer) lotteryPrize.get("id"));
                     // 更新礼物表的送出数量
                     prizeRepository.updateSendPrizeCount((Integer) lotteryPrize.get("prize_id"));
                     // 更新中奖标识
@@ -144,8 +150,9 @@ public class LotteryService {
                     recordEntity.setWinningDate(new java.sql.Date(System.currentTimeMillis()));
                     recordEntity.setCertNo(customerEntity.getCertNo());
                     recordRepository.save(recordEntity);
-
                 }
+
+
             }
         }
 
